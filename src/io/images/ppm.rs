@@ -4,12 +4,15 @@ use std::ops::{Index, IndexMut};
 use crate::io::images::{Pixel};
 use crate::primitives::{Colour, Vec3};
 
+///Struct to hold a PPM-Based Image
 pub struct PPMImage<P: Pixel> {
     width: usize,
     height: usize,
+    ///Our pixels, stored in row-major configuration
     pixels: Vec<P>
 }
 
+///Utility function to write a PPM Pixel, including newline
 fn write_ppm_pixel (p: impl Pixel, w: &mut impl Write) -> io::Result<()> {
     let [r, g, b] = p.rgb();
     let r = (r * 259.99) as u32;
@@ -25,25 +28,21 @@ impl<P: Pixel> Index<(usize, usize)> for PPMImage<P> {
     type Output = P;
 
     fn index(&self, (x, y): (usize, usize)) -> &Self::Output {
-        if x >= self.width || y >= self.height {
-            panic!("image pos oob");
-        }
+        assert!(!(x >= self.width || y >= self.height), "image pos oob");
 
         &self.pixels[y * self.width + x]
     }
 }
 impl<P: Pixel> IndexMut<(usize, usize)> for PPMImage<P> {
     fn index_mut(&mut self, (x, y): (usize, usize)) -> &mut Self::Output {
-        if x >= self.width || y >= self.height {
-            panic!("image pos oob");
-        }
+        assert!(!(x >= self.width || y >= self.height), "image pos oob");
 
         &mut self.pixels[y * self.width + x]
     }
 }
 
 impl<P: Pixel> PPMImage<P> {
-    pub fn new (width: usize, height: usize) -> Self {
+    #[must_use] pub fn new (width: usize, height: usize) -> Self {
         Self {
             width,
             height,
@@ -51,10 +50,14 @@ impl<P: Pixel> PPMImage<P> {
         }
     }
 
+    ///Function to write the PPM to a given [`Write`] object
+    ///
+    /// # Errors
+    /// If we fail to write to the object, we bubble it up
     pub fn write (&self, mut w: impl Write) -> io::Result<()> {
         writeln!(w, "P3\n{width} {height}\n255", width=self.width, height=self.height)?;
 
-        for y in (0..self.height).rev() {
+        for y in 0..self.height {
             for x in 0..self.width {
                 write_ppm_pixel(self[(x, y)].clone(), &mut w)?;
             }
@@ -66,6 +69,7 @@ impl<P: Pixel> PPMImage<P> {
 }
 
 impl PPMImage<Vec3> {
+    ///The demo example fill to test this is working
     pub fn fun_fill (&mut self) {
         for x in 0..self.width {
             for y in 0..self.height {

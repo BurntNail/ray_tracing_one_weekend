@@ -18,36 +18,36 @@ impl Display for Vec3 {
 }
 
 impl Vec3 {
-    pub fn new (x: Backing, y: Backing, z: Backing) -> Self {
+    #[must_use] pub const fn new (x: Backing, y: Backing, z: Backing) -> Self {
         Self {
             x, y, z
         }
     }
 
-    pub fn x (&self) -> Backing {
+    #[must_use] pub const fn x (&self) -> Backing {
         self.x
     }
-    pub fn y (&self) -> Backing {
+    #[must_use] pub const fn y (&self) -> Backing {
         self.y
     }
-    pub fn z (&self) -> Backing {
+    #[must_use] pub const fn z (&self) -> Backing {
         self.z
     }
 
-    pub fn magnitude_squared (&self) -> Backing {
+    #[must_use] pub fn magnitude_squared (&self) -> Backing {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
-    pub fn magnitude (&self) -> Backing {
+    #[must_use] pub fn magnitude (&self) -> Backing {
         self.magnitude_squared().sqrt()
     }
-    pub fn unit (&self) -> Self {
+    #[must_use] pub fn unit (&self) -> Self {
         *self / self.magnitude()
     }
 
-    pub fn dot (&self, Self {x, y, z}: Self) -> Backing {
+    #[must_use] pub fn dot (&self, Self {x, y, z}: Self) -> Backing {
         self.x * x + self.y * y + self.z * z
     }
-    pub fn cross (&self, Self {x, y, z}: Self) -> Self {
+    #[must_use] pub fn cross (&self, Self {x, y, z}: Self) -> Self {
         Self::new(
             self.y * z - self.z * y,
             self.z * x - self.x * z,

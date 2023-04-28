@@ -1,19 +1,23 @@
-use std::io;
-use std::io::Write;
-use std::ops::{Index, IndexMut};
-use crate::io::images::{Pixel};
-use crate::primitives::{Ray, Vec3};
+use crate::{
+    io::images::Pixel,
+    primitives::{collisions::Hittable, Ray, Vec3},
+};
+use std::{
+    io,
+    io::Write,
+    ops::{Index, IndexMut},
+};
 
 ///Struct to hold a PPM-Based Image
 pub struct PPMImage<P: Pixel> {
     width: usize,
     height: usize,
     ///Our pixels, stored in row-major configuration
-    pixels: Vec<P>
+    pixels: Vec<P>,
 }
 
 ///Utility function to write a PPM Pixel, including newline
-fn write_ppm_pixel (p: impl Pixel, w: &mut impl Write) -> io::Result<()> {
+fn write_ppm_pixel(p: impl Pixel, w: &mut impl Write) -> io::Result<()> {
     let [r, g, b] = p.rgb();
     let r = (r * 259.99) as u32;
     let g = (g * 259.99) as u32;
@@ -42,11 +46,12 @@ impl<P: Pixel> IndexMut<(usize, usize)> for PPMImage<P> {
 }
 
 impl<P: Pixel> PPMImage<P> {
-    #[must_use] pub fn new (width: usize, height: usize) -> Self {
+    #[must_use]
+    pub fn new(width: usize, height: usize) -> Self {
         Self {
             width,
             height,
-            pixels: vec![P::default(); width * height]
+            pixels: vec![P::default(); width * height],
         }
     }
 
@@ -54,13 +59,17 @@ impl<P: Pixel> PPMImage<P> {
     ///
     /// # Errors
     /// If we fail to write to the object, we bubble it up
-    pub fn write (&self, mut w: impl Write) -> io::Result<()> {
-        writeln!(w, "P3\n{width} {height}\n255", width=self.width, height=self.height)?;
+    pub fn write(&self, mut w: impl Write) -> io::Result<()> {
+        writeln!(
+            w,
+            "P3\n{width} {height}\n255",
+            width = self.width,
+            height = self.height
+        )?;
 
         for y in (0..self.height).rev() {
             for x in 0..self.width {
                 write_ppm_pixel(self[(x, y)].clone(), &mut w)?;
-
             }
         }
 
@@ -69,15 +78,24 @@ impl<P: Pixel> PPMImage<P> {
 }
 
 impl PPMImage<Vec3> {
-    ///The demo example fill to test this is working
-    pub fn fun_fill (&mut self, origin: Vec3, lower_left_corner: Vec3, horizontal: Vec3, vertical: Vec3) {
+    pub fn fill(
+        &mut self,
+        origin: Vec3,
+        lower_left_corner: Vec3,
+        horizontal: Vec3,
+        vertical: Vec3,
+        world: &dyn Hittable,
+    ) {
         for x in 0..self.width {
             for y in 0..self.height {
                 let u = x as f32 / (self.width - 1) as f32;
                 let v = y as f32 / (self.height - 1) as f32;
 
-                let ray = Ray::new(origin, lower_left_corner + u*horizontal + v*vertical - origin);
-                self[(x, y)] = ray.colour();
+                let ray = Ray::new(
+                    origin,
+                    lower_left_corner + u * horizontal + v * vertical - origin,
+                );
+                self[(x, y)] = ray.colour(world);
             }
         }
     }

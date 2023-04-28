@@ -77,7 +77,7 @@ impl PPMImage<Vec3> {
                 let v = y as f32 / (self.height - 1) as f32;
 
                 let ray = Ray::new(origin, lower_left_corner + u*horizontal + v*vertical - origin);
-                self[(x, y)] = ray.sky_colour();
+                self[(x, y)] = ray.colour();
             }
         }
     }

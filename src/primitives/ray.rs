@@ -1,5 +1,7 @@
 use crate::primitives::{Decimal, Colour, Vec3};
+use crate::primitives::collisions::sphere::hit_sphere;
 
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Ray {
     origin: Vec3,
     direction: Vec3
@@ -10,17 +12,21 @@ impl Ray {
         Self { origin, direction }
     }
 
-    pub const fn origin(&self) -> Vec3 {
+    #[must_use] pub const fn origin(&self) -> Vec3 {
         self.origin
     }
-    pub const fn direction(&self) -> Vec3 {
+    #[must_use] pub const fn direction(&self) -> Vec3 {
         self.direction
     }
-    pub fn at (&self, t: Decimal) -> Vec3 {
+    #[must_use] pub fn at (&self, t: Decimal) -> Vec3 {
         self.origin + self.direction * t
     }
 
-    #[must_use] pub fn sky_colour (&self) -> Colour {
+    #[must_use] pub fn colour(&self) -> Colour {
+        if hit_sphere(Vec3::new(0.0, 0.0, -1.0), 0.5, *self) {
+            return Colour::new(1.0, 0.0, 0.0);
+        }
+
         let unit = self.direction.unit();
         let t = 0.5 * (unit.y() + 1.0);
         Colour::new(1.0, 1.0, 1.0) * (1.0 - t) + Colour::new(0.5, 0.7, 1.0) * t

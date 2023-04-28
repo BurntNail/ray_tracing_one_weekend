@@ -1,14 +1,14 @@
 use std::fmt::{Display, Formatter};
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub, SubAssign};
 use crate::io::images::Pixel;
-use crate::primitives::Backing;
+use crate::primitives::Decimal;
 
 
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub struct Vec3 {
-    x: Backing,
-    y: Backing,
-    z: Backing
+    x: Decimal,
+    y: Decimal,
+    z: Decimal
 }
 
 impl Display for Vec3 {
@@ -18,33 +18,33 @@ impl Display for Vec3 {
 }
 
 impl Vec3 {
-    #[must_use] pub const fn new (x: Backing, y: Backing, z: Backing) -> Self {
+    #[must_use] pub const fn new (x: Decimal, y: Decimal, z: Decimal) -> Self {
         Self {
             x, y, z
         }
     }
 
-    #[must_use] pub const fn x (&self) -> Backing {
+    #[must_use] pub const fn x (&self) -> Decimal {
         self.x
     }
-    #[must_use] pub const fn y (&self) -> Backing {
+    #[must_use] pub const fn y (&self) -> Decimal {
         self.y
     }
-    #[must_use] pub const fn z (&self) -> Backing {
+    #[must_use] pub const fn z (&self) -> Decimal {
         self.z
     }
 
-    #[must_use] pub fn magnitude_squared (&self) -> Backing {
+    #[must_use] pub fn magnitude_squared (&self) -> Decimal {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
-    #[must_use] pub fn magnitude (&self) -> Backing {
+    #[must_use] pub fn magnitude (&self) -> Decimal {
         self.magnitude_squared().sqrt()
     }
     #[must_use] pub fn unit (&self) -> Self {
         *self / self.magnitude()
     }
 
-    #[must_use] pub fn dot (&self, Self {x, y, z}: Self) -> Backing {
+    #[must_use] pub fn dot (&self, Self {x, y, z}: Self) -> Decimal {
         self.x * x + self.y * y + self.z * z
     }
     #[must_use] pub fn cross (&self, Self {x, y, z}: Self) -> Self {
@@ -94,19 +94,26 @@ impl Neg for Vec3 {
     }
 }
 
-impl Mul<Backing> for Vec3 {
+impl Mul<Decimal> for Vec3 {
     type Output = Self;
 
-    fn mul(self, rhs: Backing) -> Self::Output {
+    fn mul(self, rhs: Decimal) -> Self::Output {
         let Self {x, y, z} = self;
         Self::new(x * rhs, y * rhs, z * rhs)
     }
 }
-impl MulAssign<Backing> for Vec3 {
-    fn mul_assign(&mut self, rhs: Backing) {
+impl MulAssign<Decimal> for Vec3 {
+    fn mul_assign(&mut self, rhs: Decimal) {
         self.x *= rhs;
         self.y *= rhs;
         self.z *= rhs;
+    }
+}
+impl Mul<Vec3> for Decimal {
+    type Output = Vec3;
+
+    fn mul(self, rhs: Vec3) -> Self::Output {
+       rhs * self
     }
 }
 impl Mul for Vec3 {
@@ -124,16 +131,16 @@ impl MulAssign for Vec3 {
     }
 }
 
-impl Div<Backing> for Vec3 {
+impl Div<Decimal> for Vec3 {
     type Output = Self;
 
-    fn div(self, rhs: Backing) -> Self::Output {
+    fn div(self, rhs: Decimal) -> Self::Output {
         let Self {x, y, z} = self;
         Self::new(x / rhs, y / rhs, z / rhs)
     }
 }
-impl DivAssign<Backing> for Vec3 {
-    fn div_assign(&mut self, rhs: Backing) {
+impl DivAssign<Decimal> for Vec3 {
+    fn div_assign(&mut self, rhs: Decimal) {
         self.x /= rhs;
         self.y /= rhs;
         self.z /= rhs;
@@ -141,7 +148,7 @@ impl DivAssign<Backing> for Vec3 {
 }
 
 impl Index<usize> for Vec3 {
-    type Output = Backing;
+    type Output = Decimal;
 
     fn index(&self, index: usize) -> &Self::Output {
         match index {
@@ -164,7 +171,7 @@ impl IndexMut<usize> for Vec3 {
 }
 
 impl Pixel for Vec3 {
-    fn rgb(&self) -> [Backing; 3] {
+    fn rgb(&self) -> [Decimal; 3] {
         [self.x, self.y, self.z]
     }
 }

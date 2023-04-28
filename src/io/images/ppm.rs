@@ -2,7 +2,7 @@ use std::io;
 use std::io::Write;
 use std::ops::{Index, IndexMut};
 use crate::io::images::{Pixel};
-use crate::primitives::{Colour, Vec3};
+use crate::primitives::{Ray, Vec3};
 
 ///Struct to hold a PPM-Based Image
 pub struct PPMImage<P: Pixel> {
@@ -57,12 +57,12 @@ impl<P: Pixel> PPMImage<P> {
     pub fn write (&self, mut w: impl Write) -> io::Result<()> {
         writeln!(w, "P3\n{width} {height}\n255", width=self.width, height=self.height)?;
 
-        for y in 0..self.height {
+        for y in (0..self.height).rev() {
             for x in 0..self.width {
                 write_ppm_pixel(self[(x, y)].clone(), &mut w)?;
+
             }
         }
-
 
         Ok(())
     }
@@ -70,10 +70,14 @@ impl<P: Pixel> PPMImage<P> {
 
 impl PPMImage<Vec3> {
     ///The demo example fill to test this is working
-    pub fn fun_fill (&mut self) {
+    pub fn fun_fill (&mut self, origin: Vec3, lower_left_corner: Vec3, horizontal: Vec3, vertical: Vec3) {
         for x in 0..self.width {
             for y in 0..self.height {
-                self[(x, y)] = Colour::new(x as f32 / self.width as f32, y as f32 / self.height as f32, 0.25);
+                let u = x as f32 / (self.width - 1) as f32;
+                let v = y as f32 / (self.height - 1) as f32;
+
+                let ray = Ray::new(origin, lower_left_corner + u*horizontal + v*vertical - origin);
+                self[(x, y)] = ray.sky_colour();
             }
         }
     }

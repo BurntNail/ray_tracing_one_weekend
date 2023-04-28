@@ -1,17 +1,17 @@
 use crate::primitives::{Decimal, Ray, Vec3};
 
-pub fn hit_sphere (centre: Vec3, radius: Decimal, ray: Ray) -> Decimal {
+#[must_use] pub fn hit_sphere (centre: Vec3, radius: Decimal, ray: Ray) -> Decimal {
     let oc = ray.origin() - centre;
 
-    let a = ray.direction().dot(ray.direction());
-    let b = 2.0 * oc.dot(ray.direction());
-    let c = radius.mul_add(-radius, oc.dot(oc)); //oc.dot(oc) - radius*radius
+    let a = ray.direction().magnitude_squared();
+    let half_b = oc.dot(ray.direction());
+    let c = oc.magnitude_squared() - radius*radius;
 
-    let discriminant = b*b - 4.0*a*c;
+    let discriminant = half_b.mul_add(half_b, -a * c); // half_b * half_b - a*c
 
     if discriminant < 0.0 {
         -1.0
     } else {
-        (-b - discriminant.sqrt()) / (2.0 * a)
+        (-half_b - discriminant.sqrt()) / a
     }
 }

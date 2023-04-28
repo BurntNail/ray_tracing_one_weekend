@@ -23,8 +23,10 @@ impl Ray {
     }
 
     #[must_use] pub fn colour(&self) -> Colour {
-        if hit_sphere(Vec3::new(0.0, 0.0, -1.0), 0.5, *self) {
-            return Colour::new(1.0, 0.0, 0.0);
+        let sphere = hit_sphere(Vec3::new(0.0, 0.0, -1.0), 0.5, *self);
+        if sphere > 0.0 {
+            let normal = (self.at(sphere) - Vec3::new(0.0, 0.0, -1.0)).unit();
+            return 0.5 * Vec3::new(normal.x() + 1.0, normal.y() + 1.0, normal.z() + 1.0);
         }
 
         let unit = self.direction.unit();

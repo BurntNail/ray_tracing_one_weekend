@@ -1,4 +1,4 @@
-use crate::primitives::{collisions::Hittable, Colour, Decimal, Vec3};
+use crate::primitives::{collisions::Hittable, Colour, Decimal, Point3, Vec3};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Ray {
@@ -26,10 +26,14 @@ impl Ray {
     }
 
     #[must_use]
-    pub fn colour(&self, world: &dyn Hittable) -> Colour {
+    pub fn colour(&self, world: &dyn Hittable, depth: usize) -> Colour {
+        if depth == 0 {
+            return Colour::default();
+        }
+
         if let Some(hit) = world.hit(*self, 0.5, Decimal::INFINITY) {
-            let normal = hit.normal;
-            return 0.5 * Vec3::new(normal.x() + 1.0, normal.y() + 1.0, normal.z() + 1.0);
+            let target = hit.point + hit.normal + Point3::random_in_unit_sphere();
+            return 0.5 * Self::new(hit.point, target - hit.point).colour(world, depth - 1);
         }
 
         let unit = self.direction.unit();

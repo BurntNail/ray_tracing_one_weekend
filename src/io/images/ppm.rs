@@ -86,7 +86,13 @@ impl<P: Pixel> PPMImage<P> {
 }
 
 impl PPMImage<Vec3> {
-    pub fn fill(&mut self, camera: &Camera, world: &dyn Hittable, samples_per_pixel: usize) {
+    pub fn fill(
+        &mut self,
+        camera: &Camera,
+        world: &dyn Hittable,
+        samples_per_pixel: usize,
+        max_depth: usize,
+    ) {
         let mut rng = thread_rng();
 
         let no = (self.width * self.height * samples_per_pixel) as u64;
@@ -110,7 +116,7 @@ impl PPMImage<Vec3> {
                         (y as Decimal + rng.gen_range(0.0..=1.0)) / (self.height - 1) as Decimal;
 
                     let ray = camera.get_ray(u, v);
-                    colour += ray.colour(world);
+                    colour += ray.colour(world, max_depth);
                     progress_bar.inc(1);
                 }
 

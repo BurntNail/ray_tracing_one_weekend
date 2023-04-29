@@ -20,6 +20,7 @@ fn main() {
     const HEIGHT: usize = (WIDTH as Decimal / ASPECT_RATIO) as usize;
 
     const SAMPLES_PER_PIXEL: usize = 100;
+    const MAX_DEPTH: usize = 50;
 
     let cam = Camera::default();
 
@@ -34,7 +35,7 @@ fn main() {
     ))));
 
     let mut image: PPMImage<Vec3> = PPMImage::new(WIDTH, HEIGHT);
-    image.fill(&cam, &world, SAMPLES_PER_PIXEL);
+    image.fill(&cam, &world, SAMPLES_PER_PIXEL, MAX_DEPTH);
     image
         .write(
             File::create("out.ppm").expect("unable to get file"),

@@ -1,9 +1,10 @@
-mod vec3;
-mod ray;
+pub mod camera;
 pub mod collisions;
+mod ray;
+mod vec3;
 
-pub use vec3::Vec3;
 pub use ray::Ray;
+pub use vec3::Vec3;
 
 pub type Decimal = f32;
 

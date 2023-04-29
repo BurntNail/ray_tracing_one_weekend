@@ -1,7 +1,9 @@
 use crate::{
     io::images::Pixel,
-    primitives::{collisions::Hittable, Ray, Vec3},
+    primitives::{camera::Camera, collisions::Hittable, Colour, Decimal, Vec3},
 };
+use indicatif::{ProgressBar, ProgressStyle};
+use rand::{thread_rng, Rng};
 use std::{
     io,
     io::Write,
@@ -17,13 +19,19 @@ pub struct PPMImage<P: Pixel> {
 }
 
 ///Utility function to write a PPM Pixel, including newline
-fn write_ppm_pixel(p: impl Pixel, w: &mut impl Write) -> io::Result<()> {
-    let [r, g, b] = p.rgb();
-    let r = (r * 259.99) as u32;
-    let g = (g * 259.99) as u32;
-    let b = (b * 259.99) as u32;
+fn write_ppm_pixel(
+    pixel: &impl Pixel,
+    write: &mut impl Write,
+    samples_per_pixel: usize,
+) -> io::Result<()> {
+    let [red, green, blue] = pixel
+        .rgb()
+        .map(|colour_value| 1.0 / (samples_per_pixel as Decimal) * colour_value);
+    let red = (red * 259.99) as u32;
+    let green = (green * 259.99) as u32;
+    let blue = (blue * 259.99) as u32;
 
-    writeln!(w, "{r} {g} {b}")?;
+    writeln!(write, "{red} {green} {blue}")?;
 
     Ok(())
 }
@@ -59,7 +67,7 @@ impl<P: Pixel> PPMImage<P> {
     ///
     /// # Errors
     /// If we fail to write to the object, we bubble it up
-    pub fn write(&self, mut w: impl Write) -> io::Result<()> {
+    pub fn write(&self, mut w: impl Write, samples_per_pixel: usize) -> io::Result<()> {
         writeln!(
             w,
             "P3\n{width} {height}\n255",
@@ -69,7 +77,7 @@ impl<P: Pixel> PPMImage<P> {
 
         for y in (0..self.height).rev() {
             for x in 0..self.width {
-                write_ppm_pixel(self[(x, y)].clone(), &mut w)?;
+                write_ppm_pixel(&self[(x, y)], &mut w, samples_per_pixel)?;
             }
         }
 
@@ -78,25 +86,38 @@ impl<P: Pixel> PPMImage<P> {
 }
 
 impl PPMImage<Vec3> {
-    pub fn fill(
-        &mut self,
-        origin: Vec3,
-        lower_left_corner: Vec3,
-        horizontal: Vec3,
-        vertical: Vec3,
-        world: &dyn Hittable,
-    ) {
+    pub fn fill(&mut self, camera: &Camera, world: &dyn Hittable, samples_per_pixel: usize) {
+        let mut rng = thread_rng();
+
+        let no = (self.width * self.height * samples_per_pixel) as u64;
+        println!("Doing {no} runs");
+        let progress_bar = ProgressBar::new(no); //make a new progress bar with the number of runs we expect to do
+        progress_bar.set_style(
+            ProgressStyle::with_template(
+                "{spinner} Elapsed: [{elapsed_precise}], ETA: [{eta_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7}",
+            )
+                .unwrap()
+                .progress_chars("##-"),
+        );
+
         for x in 0..self.width {
             for y in 0..self.height {
-                let u = x as f32 / (self.width - 1) as f32;
-                let v = y as f32 / (self.height - 1) as f32;
+                let mut colour = Colour::new(0.0, 0.0, 0.0);
 
-                let ray = Ray::new(
-                    origin,
-                    lower_left_corner + u * horizontal + v * vertical - origin,
-                );
-                self[(x, y)] = ray.colour(world);
+                for _ in 0..samples_per_pixel {
+                    let u = (x as Decimal + rng.gen_range(0.0..=1.0)) / (self.width - 1) as Decimal;
+                    let v =
+                        (y as Decimal + rng.gen_range(0.0..=1.0)) / (self.height - 1) as Decimal;
+
+                    let ray = camera.get_ray(u, v);
+                    colour += ray.colour(world);
+                    progress_bar.inc(1);
+                }
+
+                self[(x, y)] = colour;
             }
         }
+
+        progress_bar.finish_and_clear();
     }
 }

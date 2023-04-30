@@ -20,8 +20,8 @@ fn main() {
     const WIDTH: usize = 400;
     const HEIGHT: usize = (WIDTH as Decimal / ASPECT_RATIO) as usize;
 
-    const SAMPLES_PER_PIXEL: usize = 100;
-    const MAX_DEPTH: usize = 50;
+    const SAMPLES_PER_PIXEL: usize = 16;
+    const MAX_DEPTH: usize = 8;
 
     let cam = Camera::default();
     let ground_mat = Material::LambertianDiffuse(Colour::new(0.8, 0.8, 0.0));

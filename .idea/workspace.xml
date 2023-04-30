@@ -15,25 +15,9 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e3b1afc-0ad1-4982-af97-411d8362e965" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ray_tracing_one_weekend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ray_tracing_one_weekend.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/io.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/io/images.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/io/images/ppm.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/camera.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/collisions.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/collisions/hit_record.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/collisions/hittable_list.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/collisions/sphere.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/materials.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/ray.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/vec3.rs" beforeDir="false" />
+    <list default="true" id="0e3b1afc-0ad1-4982-af97-411d8362e965" name="Changes" comment="move to crates workspace, add homebrew ppm viewer">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/rtow/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +46,7 @@
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
+    "last_opened_file_path": "E:/Programming/Free Time/Rust/ray_tracing_one_weekend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -72,12 +57,18 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Programming\Free Time\Rust\ray_tracing_one_weekend" />
+      <recent name="E:\Programming\Free Time\Rust\ray_tracing_one_weekend\crates\ppm_viewer" />
+    </key>
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="cargo run --package" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Shell Script.Run &amp; View">
     <configuration name="Run ray_tracing_one_weekend" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="command" value="run --package rtow --bin rtow" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -95,6 +86,10 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Cargo.Run ray_tracing_one_weekend" />
+      <item itemvalue="Shell Script.Run &amp; View" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Cargo.Run ray_tracing_one_weekend" />
@@ -119,12 +114,31 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1682865113671</updated>
-      <workItem from="1682865115009" duration="3451000" />
+      <workItem from="1682865115009" duration="4465000" />
     </task>
+    <task id="LOCAL-00001" summary="move to crates workspace, add homebrew ppm viewer">
+      <created>1682871929184</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1682871929184</updated>
+    </task>
+    <task id="LOCAL-00002" summary="move to crates workspace, add homebrew ppm viewer">
+      <created>1682871933097</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1682871933097</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="move to crates workspace, add homebrew ppm viewer" />
+    <option name="LAST_COMMIT_MESSAGE" value="move to crates workspace, add homebrew ppm viewer" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

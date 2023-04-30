@@ -28,7 +28,9 @@ fn write_ppm_pixel(
 ) -> io::Result<()> {
     let [red, green, blue] = pixel
         .rgb()
-        .map(|colour_value| 1.0 / (samples_per_pixel as Decimal) * colour_value);
+        .map(|colour_value| 1.0 / (samples_per_pixel as Decimal) * colour_value)
+        .map(Decimal::sqrt); //gamma correction
+
     let red = (red * 259.99) as u32;
     let green = (green * 259.99) as u32;
     let blue = (blue * 259.99) as u32;

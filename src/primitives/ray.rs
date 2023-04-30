@@ -31,8 +31,8 @@ impl Ray {
             return Colour::default();
         }
 
-        if let Some(hit) = world.hit(*self, 0.5, Decimal::INFINITY) {
-            let target = hit.point + hit.normal + Point3::random_in_unit_sphere();
+        if let Some(hit) = world.hit(*self, 0.00001, Decimal::INFINITY) {
+            let target = hit.point + hit.normal + Point3::random_unit_vector();
             return 0.5 * Self::new(hit.point, target - hit.point).colour(world, depth - 1);
         }
 

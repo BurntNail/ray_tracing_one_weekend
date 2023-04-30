@@ -127,7 +127,7 @@ impl PPMImage<Vec3> {
                                 / (self.height - 1) as Decimal;
 
                             let ray = camera.get_ray(u, v);
-                            colour += ray.colour(world, max_depth);
+                            colour += ray.colour(world, max_depth, &mut rng);
                         }
 
                         progress_bar.inc(1);

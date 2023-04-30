@@ -20,14 +20,14 @@ fn main() {
     const WIDTH: usize = 400;
     const HEIGHT: usize = (WIDTH as Decimal / ASPECT_RATIO) as usize;
 
-    const SAMPLES_PER_PIXEL: usize = 16;
-    const MAX_DEPTH: usize = 8;
+    const SAMPLES_PER_PIXEL: usize = 100;
+    const MAX_DEPTH: usize = 50;
 
     let cam = Camera::default();
     let ground_mat = Material::LambertianDiffuse(Colour::new(0.8, 0.8, 0.0));
-    let centre_mat = Material::LambertianDiffuse(Colour::new(0.7, 0.3, 0.3));
-    let left_mat = Material::Metal(Colour::new(0.8, 0.8, 0.8), 0.3);
-    let right_mat = Material::Metal(Colour::new(0.8, 0.6, 0.2), 1.0);
+    let centre_mat = Material::LambertianDiffuse(Colour::new(0.1, 0.2, 0.5));
+    let left_mat = Material::DielectricRefraction(1.5);
+    let right_mat = Material::MetalReflection(Colour::new(0.8, 0.6, 0.2), 0.0);
 
     let mut world = HittableList::default();
     world.add(Arc::new(Box::new(Sphere::new(
@@ -43,6 +43,11 @@ fn main() {
     world.add(Arc::new(Box::new(Sphere::new(
         Vec3::new(-1.0, 0.0, -1.0),
         0.5,
+        left_mat,
+    ))));
+    world.add(Arc::new(Box::new(Sphere::new(
+        Vec3::new(-1.0, 0.0, -1.0),
+        -0.45, //inverse, so reverse reflections etc, so makes the left bubble hollow
         left_mat,
     ))));
     world.add(Arc::new(Box::new(Sphere::new(

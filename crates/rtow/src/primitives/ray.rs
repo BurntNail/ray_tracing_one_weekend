@@ -1,4 +1,5 @@
 use crate::primitives::{collisions::Hittable, Colour, Decimal, Vec3};
+use rand::rngs::ThreadRng;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Ray {
@@ -26,14 +27,14 @@ impl Ray {
     }
 
     #[must_use]
-    pub fn colour(&self, world: &dyn Hittable, depth: usize) -> Colour {
+    pub fn colour(&self, world: &dyn Hittable, depth: usize, rng: &mut ThreadRng) -> Colour {
         if depth == 0 {
             return Colour::default();
         }
 
         if let Some(hit) = world.hit(*self, 0.00001, Decimal::INFINITY) {
-            return if let Some((attenuation, scattered)) = hit.material.scatter(*self, hit) {
-                attenuation * scattered.colour(world, depth - 1)
+            return if let Some((attenuation, scattered)) = hit.material.scatter(*self, hit, rng) {
+                attenuation * scattered.colour(world, depth - 1, rng)
             } else {
                 Colour::default()
             };

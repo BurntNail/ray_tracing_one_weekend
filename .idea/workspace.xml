@@ -15,9 +15,14 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e3b1afc-0ad1-4982-af97-411d8362e965" name="Changes" comment="move to crates workspace, add homebrew ppm viewer">
+    <list default="true" id="0e3b1afc-0ad1-4982-af97-411d8362e965" name="Changes" comment="add run option to run &amp; view">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Run___View.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Run___View.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/rtow/src/io/images/ppm.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/io/images/ppm.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crates/rtow/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/rtow/src/primitives/materials.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/primitives/materials.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/rtow/src/primitives/ray.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/primitives/ray.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/rtow/src/primitives/vec3.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/primitives/vec3.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +119,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1682865113671</updated>
-      <workItem from="1682865115009" duration="4465000" />
+      <workItem from="1682865115009" duration="5857000" />
     </task>
     <task id="LOCAL-00001" summary="move to crates workspace, add homebrew ppm viewer">
       <created>1682871929184</created>
@@ -130,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682871933097</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add run option to run &amp; view">
+      <created>1682872739227</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1682872739227</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,7 +150,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="move to crates workspace, add homebrew ppm viewer" />
-    <option name="LAST_COMMIT_MESSAGE" value="move to crates workspace, add homebrew ppm viewer" />
+    <MESSAGE value="add run option to run &amp; view" />
+    <option name="LAST_COMMIT_MESSAGE" value="add run option to run &amp; view" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

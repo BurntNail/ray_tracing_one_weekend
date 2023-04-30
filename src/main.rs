@@ -9,7 +9,7 @@ use crate::{
         Decimal, Vec3,
     },
 };
-use std::{fs::File, rc::Rc};
+use std::{fs::File, sync::Arc};
 
 pub mod io;
 pub mod primitives;
@@ -25,11 +25,11 @@ fn main() {
     let cam = Camera::default();
 
     let mut world = HittableList::default();
-    world.add(Rc::new(Box::new(Sphere::new(
+    world.add(Arc::new(Box::new(Sphere::new(
         Vec3::new(0.0, 0.0, -1.0),
         0.5,
     ))));
-    world.add(Rc::new(Box::new(Sphere::new(
+    world.add(Arc::new(Box::new(Sphere::new(
         Vec3::new(0.0, -100.5, -1.0),
         100.0,
     ))));

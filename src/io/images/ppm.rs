@@ -4,10 +4,12 @@ use crate::{
 };
 use indicatif::{ProgressBar, ProgressStyle};
 use rand::{thread_rng, Rng};
+use rayon::prelude::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 use std::{
     io,
     io::Write,
     ops::{Index, IndexMut},
+    sync::mpsc::channel,
 };
 
 ///Struct to hold a PPM-Based Image
@@ -93,9 +95,7 @@ impl PPMImage<Vec3> {
         samples_per_pixel: usize,
         max_depth: usize,
     ) {
-        let mut rng = thread_rng();
-
-        let no = (self.width * self.height * samples_per_pixel) as u64;
+        let no = (self.width * self.height) as u64;
         println!("Doing {no} runs");
         let progress_bar = ProgressBar::new(no); //make a new progress bar with the number of runs we expect to do
         progress_bar.set_style(
@@ -106,21 +106,40 @@ impl PPMImage<Vec3> {
                 .progress_chars("##-"),
         );
 
-        for x in 0..self.width {
-            for y in 0..self.height {
-                let mut colour = Colour::new(0.0, 0.0, 0.0);
+        let (tx, rx) = channel();
 
-                for _ in 0..samples_per_pixel {
-                    let u = (x as Decimal + rng.gen_range(0.0..=1.0)) / (self.width - 1) as Decimal;
-                    let v =
-                        (y as Decimal + rng.gen_range(0.0..=1.0)) / (self.height - 1) as Decimal;
+        (0..self.width)
+            .into_par_iter()
+            .chunks(self.width / 2)
+            .for_each_with((tx, world), |(tx, world), rows| {
+                let world = world.clone();
+                let mut rng = thread_rng();
 
-                    let ray = camera.get_ray(u, v);
-                    colour += ray.colour(world, max_depth);
-                    progress_bar.inc(1);
+                for x in rows {
+                    for y in 0..self.height {
+                        let mut colour = Colour::new(0.0, 0.0, 0.0);
+
+                        for _ in 0..samples_per_pixel {
+                            let u = (x as Decimal + rng.gen_range(0.0..=1.0))
+                                / (self.width - 1) as Decimal;
+                            let v = (y as Decimal + rng.gen_range(0.0..=1.0))
+                                / (self.height - 1) as Decimal;
+
+                            let ray = camera.get_ray(u, v);
+                            colour += ray.colour(world, max_depth);
+                        }
+
+                        progress_bar.inc(1);
+                        tx.send((x, y, colour)).expect("unable to send");
+                    }
                 }
+            });
 
+        let mut recv_count = 0;
+        while recv_count < no {
+            for (x, y, colour) in rx.try_iter() {
                 self[(x, y)] = colour;
+                recv_count += 1;
             }
         }
 

@@ -2,13 +2,13 @@ use crate::primitives::{
     collisions::{HitRecord, Hittable},
     Decimal, Ray,
 };
-use std::rc::Rc;
+use std::sync::Arc;
 
 #[derive(Default, Debug, Clone)]
-pub struct HittableList(Vec<Rc<Box<dyn Hittable>>>);
+pub struct HittableList(Vec<Arc<Box<dyn Hittable>>>);
 
 impl HittableList {
-    pub fn add(&mut self, item: Rc<Box<dyn Hittable>>) {
+    pub fn add(&mut self, item: Arc<Box<dyn Hittable>>) {
         self.0.push(item);
     }
     pub fn clear(&mut self) {

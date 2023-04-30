@@ -32,6 +32,7 @@ impl Camera {
     pub const VIEWPORT_WIDTH: Decimal = Self::ASPECT_RATIO * Self::VIEWPORT_HEIGHT;
     pub const FOCAL_LENGTH: Decimal = 1.0;
 
+    #[must_use]
     pub fn get_ray(&self, u: Decimal, v: Decimal) -> Ray {
         Ray::new(
             self.origin,

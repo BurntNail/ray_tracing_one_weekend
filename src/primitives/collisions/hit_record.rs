@@ -1,22 +1,28 @@
-use crate::primitives::{Decimal, Point3, Ray, Vec3};
+use crate::primitives::{materials::Material, Decimal, Point3, Ray, Vec3};
 
 #[derive(Debug, Copy, Clone)]
 pub struct HitRecord {
-    //TODO: getters etc
     pub point: Point3,
     pub normal: Vec3,
+    pub material: Material,
     pub time: Decimal,
     pub front_face: bool,
 }
 
 impl HitRecord {
-    pub fn new(time: Decimal, ray: Ray, calc_normal: impl Fn(Vec3) -> Vec3) -> Self {
+    pub fn new(
+        time: Decimal,
+        ray: Ray,
+        calc_normal: impl Fn(Vec3) -> Vec3,
+        material: Material,
+    ) -> Self {
         let point = ray.at(time);
         let normal = calc_normal(point);
 
         let mut s = Self {
             point,
             time,
+            material,
             normal,
             front_face: false,
         };

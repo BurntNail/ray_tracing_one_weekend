@@ -98,7 +98,6 @@ impl PPMImage<Vec3> {
         max_depth: usize,
     ) {
         let no = (self.width * self.height) as u64;
-        println!("Doing {no} runs");
         let progress_bar = ProgressBar::new(no); //make a new progress bar with the number of runs we expect to do
         progress_bar.set_style(
             ProgressStyle::with_template(

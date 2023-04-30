@@ -1,18 +1,24 @@
 use crate::primitives::{
     collisions::{HitRecord, Hittable},
+    materials::Material,
     Decimal, Ray, Vec3,
 };
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct Sphere {
     centre: Vec3,
     radius: Decimal,
+    material: Material,
 }
 
 impl Sphere {
     #[must_use]
-    pub const fn new(centre: Vec3, radius: Decimal) -> Self {
-        Self { centre, radius }
+    pub const fn new(centre: Vec3, radius: Decimal, material: Material) -> Self {
+        Self {
+            centre,
+            radius,
+            material,
+        }
     }
 }
 
@@ -39,8 +45,11 @@ impl Hittable for Sphere {
             }
         }
 
-        Some(HitRecord::new(root, ray, |point| {
-            (point - self.centre) / self.radius
-        }))
+        Some(HitRecord::new(
+            root,
+            ray,
+            |point| (point - self.centre) / self.radius,
+            self.material.clone(),
+        ))
     }
 }

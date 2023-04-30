@@ -1,4 +1,4 @@
-use crate::primitives::{collisions::Hittable, Colour, Decimal, Point3, Vec3};
+use crate::primitives::{collisions::Hittable, Colour, Decimal, Vec3};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Ray {
@@ -32,8 +32,11 @@ impl Ray {
         }
 
         if let Some(hit) = world.hit(*self, 0.00001, Decimal::INFINITY) {
-            let target = hit.point + hit.normal + Point3::random_unit_vector();
-            return 0.5 * Self::new(hit.point, target - hit.point).colour(world, depth - 1);
+            return if let Some((attenuation, scattered)) = hit.material.scatter(*self, hit) {
+                attenuation * scattered.colour(world, depth - 1)
+            } else {
+                Colour::default()
+            };
         }
 
         let unit = self.direction.unit();

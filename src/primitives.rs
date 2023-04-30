@@ -1,5 +1,6 @@
 pub mod camera;
 pub mod collisions;
+pub mod materials;
 mod ray;
 mod vec3;
 

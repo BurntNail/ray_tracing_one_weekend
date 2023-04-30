@@ -18,12 +18,14 @@ impl HittableList {
 
 impl Hittable for HittableList {
     fn hit(&self, ray: Ray, t_min: Decimal, t_max: Decimal) -> Option<HitRecord> {
-        for obj in &self.0 {
-            if let Some(hr) = obj.hit(ray, t_min, t_max) {
-                return Some(hr);
+        let mut smallest = None;
+
+        for hit in self.0.iter().filter_map(|obj| obj.hit(ray, t_min, t_max)) {
+            if smallest.map_or(true, |smallest: HitRecord| hit.time < smallest.time) {
+                smallest = Some(hit);
             }
         }
 
-        None
+        smallest
     }
 }

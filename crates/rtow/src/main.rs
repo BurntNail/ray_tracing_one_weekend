@@ -6,6 +6,7 @@ use crate::{
     primitives::{
         camera::Camera,
         collisions::{sphere::Sphere, HittableList},
+        decimal_consts,
         materials::Material,
         Colour, Decimal, Vec3,
     },
@@ -16,14 +17,19 @@ pub mod io;
 pub mod primitives;
 
 fn main() {
-    const ASPECT_RATIO: Decimal = Camera::ASPECT_RATIO;
+    const ASPECT_RATIO: Decimal = 16.0 / 9.0;
     const WIDTH: usize = 400;
     const HEIGHT: usize = (WIDTH as Decimal / ASPECT_RATIO) as usize;
 
     const SAMPLES_PER_PIXEL: usize = 100;
     const MAX_DEPTH: usize = 50;
 
-    let cam = Camera::default();
+    let cam = Camera::new(
+        20.0,
+        ASPECT_RATIO,
+        Vec3::new(-2.0, 2.0, 1.0),
+        Vec3::new(0.0, 0.0, -1.0),
+    );
     let ground_mat = Material::LambertianDiffuse(Colour::new(0.8, 0.8, 0.0));
     let centre_mat = Material::LambertianDiffuse(Colour::new(0.1, 0.2, 0.5));
     let left_mat = Material::DielectricRefraction(1.5);

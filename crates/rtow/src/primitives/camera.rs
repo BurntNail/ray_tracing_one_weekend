@@ -8,35 +8,42 @@ pub struct Camera {
     vertical: Vec3,
 }
 
-impl Default for Camera {
-    fn default() -> Self {
-        let origin = Point3::default();
-        let horizontal = Vec3::new(Self::VIEWPORT_WIDTH, 0.0, 0.0);
-        let vertical = Vec3::new(0.0, Self::VIEWPORT_HEIGHT, 0.0);
+impl Camera {
+    pub const FOCAL_LENGTH: Decimal = 1.0;
+
+    #[must_use]
+    pub fn new(
+        vertical_fov_degrees: Decimal,
+        aspect_ratio: Decimal,
+        look_from: Vec3,
+        look_at: Vec3,
+    ) -> Self {
+        let rads = vertical_fov_degrees.to_radians();
+        let height = (rads / 2.0).tan();
+        let viewport_height = 2.0 * height;
+        let viewport_width = aspect_ratio * viewport_height;
+
+        let w = (look_from - look_at).unit();
+        let u = Vec3::UP.cross(w).unit();
+        let v = w.cross(u);
+
+        let origin = look_from;
+        let horizontal = viewport_width * u;
+        let vertical = viewport_height * v;
 
         Self {
             origin,
-            lower_left_corner: origin
-                - horizontal / 2.0
-                - vertical / 2.0
-                - Point3::new(0.0, 0.0, Self::FOCAL_LENGTH),
+            lower_left_corner: origin - horizontal / 2.0 - vertical / 2.0 - w,
             horizontal,
             vertical,
         }
     }
-}
-
-impl Camera {
-    pub const ASPECT_RATIO: Decimal = 16.0 / 9.0;
-    pub const VIEWPORT_HEIGHT: Decimal = 2.0;
-    pub const VIEWPORT_WIDTH: Decimal = Self::ASPECT_RATIO * Self::VIEWPORT_HEIGHT;
-    pub const FOCAL_LENGTH: Decimal = 1.0;
 
     #[must_use]
-    pub fn get_ray(&self, u: Decimal, v: Decimal) -> Ray {
+    pub fn get_ray(&self, s: Decimal, t: Decimal) -> Ray {
         Ray::new(
             self.origin,
-            self.lower_left_corner + u * self.horizontal + v * self.vertical - self.origin,
+            self.lower_left_corner + s * self.horizontal + t * self.vertical - self.origin,
         )
     }
 }

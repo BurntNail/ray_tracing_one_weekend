@@ -19,6 +19,12 @@ impl Display for Vec3 {
 }
 
 impl Vec3 {
+    pub const UP: Self = Vec3 {
+        x: 0.0,
+        y: 1.0,
+        z: 0.0
+    };
+    
     #[must_use]
     pub const fn new(x: Decimal, y: Decimal, z: Decimal) -> Self {
         Self { x, y, z }

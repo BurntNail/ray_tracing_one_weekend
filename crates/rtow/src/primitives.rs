@@ -8,6 +8,9 @@ pub use ray::Ray;
 pub use vec3::Vec3;
 
 pub type Decimal = f32;
+pub mod decimal_consts {
+    pub use std::f32::consts::*;
+}
 
 pub type Point3 = Vec3;
 pub type Colour = Vec3;

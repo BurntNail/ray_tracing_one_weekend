@@ -126,7 +126,7 @@ impl PPMImage<Vec3> {
                             let v = (y as Decimal + rng.gen_range(0.0..=1.0))
                                 / (self.height - 1) as Decimal;
 
-                            let ray = camera.get_ray(u, v);
+                            let ray = camera.get_ray(u, v, &mut rng);
                             colour += ray.colour(world, max_depth, &mut rng);
                         }
 

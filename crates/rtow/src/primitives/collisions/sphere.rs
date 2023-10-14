@@ -49,7 +49,7 @@ impl Hittable for Sphere {
             root,
             ray,
             |point| (point - self.centre) / self.radius,
-            self.material.clone(),
+            self.material,
         ))
     }
 }

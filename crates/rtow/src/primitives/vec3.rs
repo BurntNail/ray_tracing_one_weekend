@@ -1,5 +1,5 @@
 use crate::{io::images::Pixel, primitives::Decimal};
-use rand::{thread_rng, Rng};
+use rand::{rngs::ThreadRng, Rng};
 use std::{
     fmt::{Display, Formatter},
     ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub, SubAssign},
@@ -19,12 +19,12 @@ impl Display for Vec3 {
 }
 
 impl Vec3 {
-    pub const UP: Self = Vec3 {
+    pub const UP: Self = Self {
         x: 0.0,
         y: 1.0,
-        z: 0.0
+        z: 0.0,
     };
-    
+
     #[must_use]
     pub const fn new(x: Decimal, y: Decimal, z: Decimal) -> Self {
         Self { x, y, z }
@@ -70,12 +70,12 @@ impl Vec3 {
     }
 
     #[must_use]
-    pub fn random() -> Self {
-        Self::random_range(0.0, 1.0)
+    ///0 to 1
+    pub fn random(rng: &mut ThreadRng) -> Self {
+        Self::random_range(0.0, 1.0, rng)
     }
     #[must_use]
-    pub fn random_range(min: Decimal, max: Decimal) -> Self {
-        let mut rng = thread_rng();
+    pub fn random_range(min: Decimal, max: Decimal, rng: &mut ThreadRng) -> Self {
         Self::new(
             rng.gen_range(min..=max),
             rng.gen_range(min..=max),
@@ -83,25 +83,33 @@ impl Vec3 {
         )
     }
     #[must_use]
-    pub fn random_in_unit_sphere() -> Self {
+    pub fn random_in_unit_sphere(rng: &mut ThreadRng) -> Self {
         loop {
-            let p = Self::random_range(-1.0, 1.0);
+            let p = Self::random_range(-1.0, 1.0, rng);
             if p.magnitude_squared() < 1.0 {
                 return p;
             }
         }
     }
     #[must_use]
-    pub fn random_unit_vector() -> Self {
-        Self::random_in_unit_sphere().unit()
+    pub fn random_unit_vector(rng: &mut ThreadRng) -> Self {
+        Self::random_in_unit_sphere(rng).unit()
     }
     #[must_use]
-    pub fn random_in_hemisphere(normal: Self) -> Self {
-        let in_unit_sphere = Self::random_in_unit_sphere();
+    pub fn random_in_hemisphere(normal: Self, rng: &mut ThreadRng) -> Self {
+        let in_unit_sphere = Self::random_in_unit_sphere(rng);
         if in_unit_sphere.dot(normal) > 0.0 {
             in_unit_sphere
         } else {
             -in_unit_sphere
+        }
+    }
+    pub fn random_in_unit_disk(rng: &mut ThreadRng) -> Self {
+        loop {
+            let p = Self::new(rng.gen_range(0.0..=1.0), rng.gen_range(0.0..=1.0), 0.0);
+            if p.magnitude_squared() < 1.0 {
+                return p;
+            }
         }
     }
 
@@ -204,15 +212,12 @@ impl Div<Decimal> for Vec3 {
     type Output = Self;
 
     fn div(self, rhs: Decimal) -> Self::Output {
-        let Self { x, y, z } = self;
-        Self::new(x / rhs, y / rhs, z / rhs)
+        self * (1.0 / rhs)
     }
 }
 impl DivAssign<Decimal> for Vec3 {
     fn div_assign(&mut self, rhs: Decimal) {
-        self.x /= rhs;
-        self.y /= rhs;
-        self.z /= rhs;
+        *self *= 1.0 / rhs;
     }
 }
 

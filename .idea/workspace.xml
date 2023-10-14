@@ -15,11 +15,15 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e3b1afc-0ad1-4982-af97-411d8362e965" name="Changes" comment="add glass">
+    <list default="true" id="0e3b1afc-0ad1-4982-af97-411d8362e965" name="Changes" comment="camera mobility">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Run___View.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Run___View.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/rtow/src/io/images/ppm.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/io/images/ppm.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crates/rtow/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crates/rtow/src/primitives.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/primitives.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crates/rtow/src/primitives/camera.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/primitives/camera.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/rtow/src/primitives/collisions/sphere.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/primitives/collisions/sphere.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/rtow/src/primitives/materials.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/primitives/materials.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crates/rtow/src/primitives/vec3.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/rtow/src/primitives/vec3.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -30,12 +34,18 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="090353tr" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2P9N0JIpg7YWSJRxcypZcoTQSBp" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -49,6 +59,8 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;E:/Programming/Free Time/Rust/ray_tracing_one_weekend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -56,7 +68,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust.rustfmt&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust.cargo.check&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -66,9 +78,14 @@
       <recent name="E:\Programming\Free Time\Rust\ray_tracing_one_weekend\crates\ppm_viewer" />
     </key>
   </component>
+  <component name="RsExternalLinterProjectSettings">
+    <option name="runOnTheFly" value="true" />
+    <option name="tool" value="Clippy" />
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="cargo run --package" />
+      <command value="cargo clippy" />
     </option>
   </component>
   <component name="RunManager" selected="Shell Script.Run &amp; View">
@@ -89,12 +106,31 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <configuration name="clippy" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="clippy" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <option name="emulateTerminal" value="false" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <envs />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <list>
+      <item itemvalue="Cargo.clippy" />
       <item itemvalue="Cargo.Run ray_tracing_one_weekend" />
       <item itemvalue="Shell Script.Run &amp; View" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.clippy" />
         <item itemvalue="Cargo.Run ray_tracing_one_weekend" />
       </list>
     </recent_temporary>
@@ -119,6 +155,12 @@
       <option name="presentableId" value="Default" />
       <updated>1682865113671</updated>
       <workItem from="1682865115009" duration="7504000" />
+      <workItem from="1682940742809" duration="1745000" />
+      <workItem from="1683049243646" duration="516000" />
+      <workItem from="1683061320416" duration="5000" />
+      <workItem from="1694634297525" duration="229000" />
+      <workItem from="1694634573064" duration="71000" />
+      <workItem from="1695331332261" duration="25000" />
     </task>
     <task id="LOCAL-00001" summary="move to crates workspace, add homebrew ppm viewer">
       <created>1682871929184</created>
@@ -148,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682874232931</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="camera mobility">
+      <created>1682940925479</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1682940925479</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,7 +207,8 @@
     <MESSAGE value="move to crates workspace, add homebrew ppm viewer" />
     <MESSAGE value="add run option to run &amp; view" />
     <MESSAGE value="add glass" />
-    <option name="LAST_COMMIT_MESSAGE" value="add glass" />
+    <MESSAGE value="camera mobility" />
+    <option name="LAST_COMMIT_MESSAGE" value="camera mobility" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

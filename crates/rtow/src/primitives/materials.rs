@@ -22,7 +22,7 @@ impl Material {
     ) -> Option<(Colour, Ray)> {
         match self {
             Self::LambertianDiffuse(albedo) => {
-                let mut scatter_dir = hit_record.normal + Point3::random_unit_vector();
+                let mut scatter_dir = hit_record.normal + Point3::random_unit_vector(rng);
 
                 if scatter_dir.near_zero() {
                     scatter_dir = hit_record.normal;
@@ -34,7 +34,7 @@ impl Material {
                 let reflected = ray_in.direction().unit().reflect(hit_record.normal);
                 let scattered = Ray::new(
                     hit_record.point,
-                    reflected + *fuzz * Point3::random_in_unit_sphere(),
+                    reflected + *fuzz * Point3::random_in_unit_sphere(rng),
                 );
                 if scattered.direction().dot(hit_record.normal) > 0.0 {
                     Some((*albedo, scattered))
